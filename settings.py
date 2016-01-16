@@ -1,6 +1,6 @@
 import os
 
-if os.environ.get('CROC_FARM_DEV') == '1':
+if os.environ.get('DEBUG') == '1':
     DEBUG = True
 else:
     DEBUG = False
