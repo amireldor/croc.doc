@@ -8,14 +8,13 @@ from random import randint, choice
 import datetime
 from connection import docs as docs_collection
 import pymongo
+import settings
 
 adjectives = list(map(lambda w: w.strip().lower(), open('Adjectives.txt').readlines()))
 animals = list(map(lambda w: w.strip().lower(), open('Animals.txt').readlines()))
 
 def randomDocName():
-    """Returns a random doc name.  You should actually call `uniqueDocName`.
-    """
-    final = "{}-{}-{}".format( choice(adjectives), choice(animals), str(randint(0, 1000)).zfill(3) )
+    final = "{}-{}".format( choice(adjectives), choice(animals) )
     return final
 
 
@@ -23,6 +22,9 @@ class NoDocFound(Exception):
     pass
 
 class DatabaseError(Exception):
+    pass
+
+class FailedToSave(Exception):
     pass
 
 def getDoc(name):
@@ -39,26 +41,46 @@ def getDoc(name):
 
 
 def saveDoc(doc):
-    """Attemps to save the doc.  If duplicate key, try again with differnet
-    key, or in other words, fuck the duck until exploded.  Will bail after
-    several tries Will bail after several tries.
+    """Saves the doc.  If name exists in database and is not protected,
+    overwrite the existing doc.  If the name exists and is protected (was used
+    recently), then try a differnet name.
 
-    Return the newly created doc name, or None for failure
+    Return the newly created doc name, or None on failure.
     """
-    data = {
-        "name": None,
-        "doc": doc,
-        "inserted": datetime.datetime.utcnow()
-    }
-
-    for _ in range(10):
+    for _ in range(settings.SAVE_RETRIES):
         try:
             name = randomDocName()
-            data['name'] = name
-            docs_collection.insert_one(data)
+            doc_in_db = docs_collection.find_one({ "name": name }, { "protected_until": 1 });
+
+            if doc_in_db is None:
+                exists = False
+            else:
+                exists = True
+
+            try:
+                if exists and doc_in_db["protected_until"] >= datetime.datetime.utcnow():
+                    # Still under protection
+                    continue # Search another name
+
+            except KeyError:
+                # No protected_until key
+                pass
+
+            # OK, save or update it
+            data = {
+                "name": name,
+                "doc": doc,
+                "inserted": datetime.datetime.utcnow(),
+                "protected_until": datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.PROTECTION_TIME),
+            }
+
+            docs_collection.update_one({"name": name}, {"$set": data}, upsert=True)
+
+            # Save successful!
             return name
 
         except pymongo.errors.DuplicateKeyError:
             pass
 
-    return None
+    # Failed to save
+    raise FailedToSave('Reached maximum save retry count, seems like many docs are protected today!')
