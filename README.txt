@@ -14,6 +14,9 @@ environment variable. Or:
     DEBUG=1 python main.py
 
 
+Will automatically connect to host 'mongo' for mongo stuff (use with Docker).
+Change this with env var CONNECTION_URL=mongodb://yourhost.
+
 ## Web interface
 
 endpoints:
