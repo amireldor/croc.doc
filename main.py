@@ -54,4 +54,4 @@ def get_doc(which_doc):
 
 if __name__ == "__main__":
     app.debug = settings.DEBUG
-    app.run()
+    app.run(host='0.0.0.0')
