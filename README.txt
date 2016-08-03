@@ -15,7 +15,7 @@ environment variable. Or:
 
 
 Will automatically connect to host 'mongo' for mongo stuff (use with Docker).
-Change this with env var CONNECTION_URL=mongodb://yourhost.
+Change this with env var MONGO_URL=mongodb://yourhost.
 
 ## Web interface
 

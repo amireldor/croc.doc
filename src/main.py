@@ -54,4 +54,5 @@ def get_doc(which_doc):
 
 if __name__ == "__main__":
     app.debug = settings.DEBUG
-    app.run(host='0.0.0.0')
+    print("Will listen on {0}:{1}".format(settings.HOST, settings.PORT))
+    app.run(host=settings.HOST, port=settings.PORT)
