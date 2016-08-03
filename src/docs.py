@@ -10,8 +10,8 @@ from connection import docs as docs_collection
 import pymongo
 import settings
 
-adjectives = list(map(lambda w: w.strip().lower(), open('Adjectives.txt').readlines()))
-animals = list(map(lambda w: w.strip().lower(), open('Animals.txt').readlines()))
+adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
+animals = [w.strip().lower() for w in open('Animals.txt').readlines()]
 
 def randomDocName():
     final = "{}-{}".format( choice(adjectives), choice(animals) )
