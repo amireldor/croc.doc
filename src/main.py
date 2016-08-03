@@ -14,7 +14,14 @@ def home():
 
 @app.route("/doc", methods=["POST"])
 def save_doc():
-    doc = request.get_json()["doc"]
+    json = request.get_json()
+
+    if json is None:
+        response = jsonify(status="error", message="do you even json?")
+        response.status_code = 400  # bad request
+        return response
+
+    doc = json["doc"]
     if len(doc) > settings.MAX_DOC_SIZE:
         response = {
             "status": "error",
@@ -27,8 +34,8 @@ def save_doc():
         "status": "ok",
         "name": new_name,
     }
-
     return jsonify(response)
+
 
 @app.route("/doc/<which_doc>", methods=["GET"])
 def get_doc(which_doc):
