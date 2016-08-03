@@ -1,16 +1,12 @@
 import settings
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from docs import saveDoc, getDoc, NoDocFound
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    resonse = {
-        "status": "hi",
-        "message": "hello, how are you?",
-    }
-    return jsonify(resonse)
+    return render_template('doc.html')
 
 @app.route("/feedcroc", methods=["POST"])
 def save_doc():
