@@ -37,25 +37,19 @@ def save_doc():
     return jsonify(response)
 
 
-@app.route("/doc/<which_doc>", methods=["GET"])
+@app.route("/<which_doc>", methods=["GET"])
 def get_doc(which_doc):
     response = {}
     try:
         doc = getDoc(which_doc)
-        response = {
-            "status": "ok",
-            "name": which_doc,
-            "doc": doc["doc"],
-        }
+        response = jsonify(status="ok",name=which_doc, doc=doc["doc"])
 
     except NoDocFound:
-        response = {
-            "status": "error",
-            "message": "couldn't find that"
-        }
+        response = jsonify(status="error", message="couldn't find that")
+        response.status_code = 404
 
     finally:
-        return jsonify(response)
+        return response
 
 
 
