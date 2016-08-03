@@ -12,7 +12,7 @@ def home():
     }
     return jsonify(resonse)
 
-@app.route("/doc", methods=["POST"])
+@app.route("/feedcroc", methods=["POST"])
 def save_doc():
     json = request.get_json()
 
