@@ -1,0 +1,74 @@
+$description-width: 555px;
+$side-margins: 200px;
+
+@mixin mobile {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+// Now the fun starts...
+body {
+  color: black;
+  background: beige;
+
+  padding: 0;
+  margin: 0;
+}
+
+#site-header {
+  h1 {
+    margin: 10px 0 6px;
+    font-size: 22pt;
+  }
+  margin: 0 $side-margins 55px;
+
+  @include mobile {
+    margin: 0;
+    h1 {
+      font-size:14pt;
+    }
+  }
+}
+
+#slogan {
+  font-size: 14pt;
+  margin-left: 120px;
+}
+
+
+// Container of the interestnig stuff (no header)
+#app-content {
+  display: flex;
+  flex-direction: row;
+
+  margin: 0 $side-margins;
+
+  @include mobile {
+    // When on mobile, stack stuff vertically
+    flex-direction: column;
+    margin: 0;
+  }
+}
+
+// The interesting stuff and the form
+#doc {
+  flex: 1 0 auto;
+}
+
+#doc-content {
+  width: 80%;
+  min-height: 270px;
+  display: block;
+}
+
+// Description of the site
+#description {
+  flex: 0 0 auto;
+  width: $description-width
+
+  @include mobile {
+    flex-basis: auto;
+  }
+}
+

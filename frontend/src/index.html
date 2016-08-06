@@ -3,17 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>croc.farm</title>
+  <link rel="stylesheet" type="text/css" href="static/crocfarm.css"/>
 </head>
 <body>
-  <section id="doc">
-    <form id="doc-form">
-      <textarea name="doc" id="doc-content" placeholder="Enter stuff here..."></textarea>
-      <input type="submit" value="Give me a link!"/>
-    </form>
-  </section>
-  <section id="description">
-  </section>
-  <static></static>
+
+  <header id="site-header">
+    <h1>croc.farm - shorten, remember.</h1>
+    <span id="slogan">You write stuff, the croc gives you an easy link!</span>
+  </header>
+
+  <div id="app-content">
+    <section id="doc">
+      <div id="doc-name">
+        <a href="http://croc.farm/braving-wombat">http://croc.farm/braving-wombat</a>
+      </div>
+      <form id="doc-form">
+        <textarea name="doc" id="doc-content" placeholder="Enter stuff here..."></textarea>
+        <input type="submit" value="Give me a link!"/>
+      </form>
+    </section>
+    <section id="description">
+      This is croc.farm.
+    </section>
+  </div><!-- app-content -->
+
   <script src="static/crocfarm.js"></script>
 </body>
 </html>
