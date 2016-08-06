@@ -7,25 +7,19 @@
 </head>
 <body>
 
-  <header id="site-header">
-    <h1>croc.farm - shorten, remember.</h1>
-    <span id="slogan">You write stuff, the croc gives you an easy link!</span>
-  </header>
-
-  <div id="app-content">
+  <div id="app">
     <section id="doc">
       <div id="doc-name">
-        <a href="http://croc.farm/braving-wombat">http://croc.farm/braving-wombat</a>
+        <a href="http://croc.farm/mocking-spider">http://croc.farm/<strong>mocking-spider</strong></a>
       </div>
       <form id="doc-form">
-        <textarea name="doc" id="doc-content" placeholder="Enter stuff here..."></textarea>
-        <input type="submit" value="Give me a link!"/>
+        <div id="doc-content">
+          <textarea name="doc" id="doc-content" placeholder="Enter stuff here..."></textarea>
+        </div>
+        <input type="submit" value="feed the croc"/>
       </form>
     </section>
-    <section id="description">
-      This is croc.farm.
-    </section>
-  </div><!-- app-content -->
+  </div><!-- app -->
 
   <script src="static/crocfarm.js"></script>
 </body>

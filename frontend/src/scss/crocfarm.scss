@@ -1,74 +1,84 @@
-$description-width: 555px;
-$side-margins: 200px;
+@import url(https://fonts.googleapis.com/css?family=Francois+One);
+$font: "Francois One", sans-serif;
+$color: blue;
+$width: 1020px;
 
 @mixin mobile {
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: $width) {
     @content;
   }
 }
 
-// Now the fun starts...
 body {
-  color: black;
-  background: beige;
+  // Set the nice croc background
+  background: url('images/blurrycroc.jpg') repeat;
+  background-size: cover;
 
-  padding: 0;
   margin: 0;
+
+  font-size: 22pt;
+  font-family: $font;
 }
 
-#site-header {
-  h1 {
-    margin: 10px 0 6px;
-    font-size: 22pt;
-  }
-  margin: 0 $side-margins 55px;
-
-  @include mobile {
-    margin: 0;
-    h1 {
-      font-size:14pt;
-    }
-  }
-}
-
-#slogan {
-  font-size: 14pt;
-  margin-left: 120px;
-}
-
-
-// Container of the interestnig stuff (no header)
-#app-content {
+#app {
+  // This will arrange and stack all items nicely
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+}
 
-  margin: 0 $side-margins;
+// This is shared among all base layout elements
+$common-background: rgba(255, 255, 255, 0.55);
+$elem-space: 20px;  // Common spacing between elements
 
+#doc-form, #doc-name {
+  width: $width;
   @include mobile {
-    // When on mobile, stack stuff vertically
-    flex-direction: column;
-    margin: 0;
+    width: 90vw;
   }
 }
 
-// The interesting stuff and the form
-#doc {
-  flex: 1 0 auto;
+#doc-name {
+  margin: 60px 0 $elem-space;
+  text-align: center;
+  padding: $elem-space 0;  // Makes the box "buffier"
+  background: $common-background;
+  a {
+    color: $color;
+  }
+}
+
+#doc-form {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
 }
 
 #doc-content {
-  width: 80%;
-  min-height: 270px;
   display: block;
-}
+  background: $common-background;
+  padding: $elem-space;
+  display: flex;
 
-// Description of the site
-#description {
-  flex: 0 0 auto;
-  width: $description-width
-
-  @include mobile {
-    flex-basis: auto;
+  textarea {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    min-height: 320px;
+    font-size: inherit;
   }
 }
 
+#doc-form input[type=submit] {
+  margin: $elem-space 0 0;
+  align-self: center;
+  border: none;
+  background: $common-background;
+  padding: $elem-space;
+  color: $color;
+  font-size: inherit;
+  &:hover {
+    color: lighten($color, 14%);
+    cursor: pointer;
+  }
+}
