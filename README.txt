@@ -1,4 +1,6 @@
-This is docservice "croc.doc", manages named docs for croc.farm on a mongo
+This is what runs croc.farm. It is called croc.doc after the docs it manages.
+
+# backend:
 
 ## Run it
 
@@ -34,3 +36,7 @@ POST: Should be Content-Type: application/json
     "message": <some greeting, optional>
 }
 
+
+# frontend
+
+npm install and gulp and such, currently there's `gulp js`

@@ -1,0 +1,21 @@
+{
+  "name": "croc.farm",
+  "version": "1.0.0",
+  "description": "The croc.doc's frontend. Part of the croc.farm!",
+  "repsitory": "http://github.com:amireldor/croc.doc.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amir Eldor",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
+  }
+}
