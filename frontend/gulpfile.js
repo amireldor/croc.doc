@@ -34,6 +34,7 @@ bundler.on('log', gutil.log);
 
 const indexHtmlPath = './src/index.html';
 const scssPath = './src/scss/**/*.scss';
+const copyToStatic = ['./src/images/**/*'];  // Copy these to static folder
 
 // more tasks
 
@@ -51,6 +52,18 @@ gulp.task('html-watch', function () {
     .watch(indexHtmlPath, ['copy-html'])
     .on('change', function (event) {
         console.log('I think HTML changed: ', event.path, event.type);
+    });
+});
+
+gulp.task('copy-other-stuff', function () {
+    gulp.src(copyToStatic, {base: './src'}).pipe(gulp.dest('./build/static'));
+});
+
+gulp.task('watch-other-stuff', function () {
+    return gulp
+    .watch(copyToStatic, ['copy-other-stuff'])
+    .on('change', function (event) {
+        console.log('Other stuff changed: ', event.path, event.type);
     });
 });
 
@@ -77,7 +90,8 @@ gulp.task('sass-watch', function () {
         });
 });
 
-gulp.task('dev', ['clean', 'copy-html', 'html-watch', 'sass', 'sass-watch', 'js']);
+gulp.task('dev', ['copy-html', 'html-watch', 'copy-other-stuff', 'watch-other-stuff', 'sass', 'sass-watch', 'js']);
+gulp.task('build', ['clean']);
 
 gulp.task('default', function () {
     console.log('Hi.');
