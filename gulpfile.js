@@ -13,17 +13,17 @@ const del = require('del');
 
 // Do watchify/browiserfy magic
 const bundler = watchify(browserify(
-    Object.assign({}, watchify.args, {entries:  ['./src/js/main.js']})
+    Object.assign({}, watchify.args, {entries:  ['./frontend/js/main.js']})
 ));
 
 function bundle() {
     return bundler.bundle()
         .on('error', gutil.log.bind(gutil, 'Browserify error'))
-        .pipe(source('static/crocfarm.js'))
+        .pipe(source('crocfarm.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./build'));
+        .pipe(gulp.dest('./backend/static'));
 }
 gulp.task('js', bundle);
 bundler.on('update', bundle);
@@ -32,19 +32,19 @@ bundler.on('log', gutil.log);
 // stuff
 // ...
 
-const indexHtmlPath = './src/index.html';
-const scssPath = './src/scss/**/*.scss';
-const copyToStatic = ['./src/images/**/*'];  // Copy these to static folder
+const indexHtmlPath = './frontend/index.html';
+const scssPath = './frontend/scss/**/*.scss';
+const copyToStatic = ['./frontend/images/**/*'];  // Copy these to static folder
 
 // more tasks
 
 // Delete build folder
 gulp.task('clean', function () {
-    return del('./build/**/*');    
+    return del('./backend/static/**/*');
 });
 
 gulp.task('copy-html', function () {
-    gulp.src(indexHtmlPath).pipe(gulp.dest('./build'));
+    gulp.src(indexHtmlPath).pipe(gulp.dest('./backend/templates'));
 });
 
 gulp.task('html-watch', function () {
@@ -56,7 +56,7 @@ gulp.task('html-watch', function () {
 });
 
 gulp.task('copy-other-stuff', function () {
-    gulp.src(copyToStatic, {base: './src'}).pipe(gulp.dest('./build/static'));
+    gulp.src(copyToStatic, {base: './frontend'}).pipe(gulp.dest('./backend/static'));
 });
 
 gulp.task('watch-other-stuff', function () {
@@ -78,7 +78,7 @@ gulp.task('sass', function () {
         .pipe(sass(sassOptions).on('error', sass.logError))
         .pipe(sourcemaps.write())
         .pipe(autoprefixer())
-        .pipe(gulp.dest('./build/static'));
+        .pipe(gulp.dest('./backend/static'));
 
 });
 
