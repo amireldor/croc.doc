@@ -1,6 +1,15 @@
 This is what runs croc.farm. It is called croc.doc after the docs it manages.
 
+# frontend:
+
+You build stuff with `npm` and `gulp`.  
+`npm i` and `gulp dev` (will add more commands later, this is a watch thing).
+This will create `backend/static` with the appropriate entries and also copy the
+ninja template from `frontend/index.html` to `backend/templates/index.html`.
+
 # backend:
+
+stuff. stfu.
 
 ## Run it
 
