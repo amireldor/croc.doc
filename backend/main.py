@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template('doc.html')
+    return render_template('index.html')
 
 @app.route("/feedcroc", methods=["POST"])
 def save_doc():
