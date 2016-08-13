@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: 'frontend/',
 
 
     // frameworks to use
@@ -15,12 +15,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'frontend/index.html'},
-      {pattern: 'frontend/js/**/*.js', included: false},
-      'frontend/test/vendor/*.js',
-      'frontend/test/*.js'
+      {pattern: 'index.html', included: false},
+      {pattern: 'js/**/*.js', included: false},  // Incuded manually in HTML
+      'test/vendor/*.js',
+      'test/*.js'
     ],
 
+    proxies: {
+    },
 
     // list of files to exclude
     exclude: [
