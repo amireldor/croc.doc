@@ -15,24 +15,22 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      {pattern: 'index.html', included: false},
-      {pattern: 'js/**/*.js', included: false},  // Incuded manually in HTML
+      {pattern: 'js/**/*.js', included: false},
       'test/vendor/*.js',
       'test/*.js'
     ],
 
-    proxies: {
-    },
-
     // list of files to exclude
     exclude: [
+        'js/main.js'  // Main entry point of the application where stuff in DOM are done and not needed for tests
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'frontend/js/**/*.js': ['browserify']
+      'js/**/*.js': ['browserify'],
+      'test/*.js': ['browserify']
     },
 
     browserify: {
