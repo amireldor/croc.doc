@@ -32,18 +32,21 @@ describe('Documents and stuff',  function () {
             window.fetch.restore();
         });
 
-        it('should parse the json from the backend', sinon.test(function () {
-            demand(document.getElementById('doc-text')).is.not.undefined();
-            return crocfarm.feedCroc('tasty deer').then(function (result) {
+        it('must parse the json from the backend', sinon.test(function (done) {
+            demand(document.getElementById('doc-text')).must.not.be.undefined();
+            crocfarm.feedCroc('tasty deer').then(function (result) {
                 return result.json();
             }).then(function (json) {
-// amir
+                demand(json.status).not.undefined();
+                demand(json.name).not.undefined();
+                //demand(json.dog).not.undefined();
+                done();
             }).catch(function (error) {
-
+                done(error);
             });
         }));
 
-        it('should fail nicely if server doesn\'t like it', sinon.test(function () {
+        it('must fail nicely if server doesn\'t like it', sinon.test(function () {
         }));
     });
 });
