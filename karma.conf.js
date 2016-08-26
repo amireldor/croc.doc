@@ -17,7 +17,8 @@ module.exports = function(config) {
     files: [
       {pattern: 'js/**/*.js', included: false},
       'test/vendor/*.js',
-      'test/*.js'
+      'test/*.js',
+      'test/*.html'
     ],
 
     // list of files to exclude
@@ -30,7 +31,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'js/**/*.js': ['browserify'],
-      'test/*.js': ['browserify']
+      'test/*.js': ['browserify'],
+      'test/*.html': ['html2js']
     },
 
     browserify: {
@@ -63,7 +65,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'Firefox', 'IE'],
+    browsers: ['Chrome', 'Firefox'],
 
 
     // Continuous Integration mode
