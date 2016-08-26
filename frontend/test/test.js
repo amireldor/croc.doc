@@ -1,10 +1,10 @@
-let expect = chai.expect;
+const demand = require('must');
 const crocfarm = require('../js/crocfarm');
 
 describe('Array',  function () {
     describe('#indexOf()',  function () {
         it('Should return -1 when value is not present',  function () {
-            expect([1, 2, 3].indexOf(4)).equal(-1);
+            demand([1, 2, 3].indexOf(4)).equal(-1);
         });
     });
 });
@@ -33,11 +33,13 @@ describe('Documents and stuff',  function () {
         });
 
         it('should parse the json from the backend', sinon.test(function () {
-            expect(document.getElementById('doc-text')).is.not.undefined;
+            demand(document.getElementById('doc-text')).is.not.undefined();
             return crocfarm.feedCroc('tasty deer').then(function (result) {
                 return result.json();
             }).then(function (json) {
-                // console.log('RESULT', json);
+// amir
+            }).catch(function (error) {
+
             });
         }));
 
