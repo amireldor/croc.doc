@@ -11,6 +11,7 @@ docForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     disableFeeder();
+    const doc = docText.value;
     crocfarm.feedCroc(doc).then(function (response) {
         enableFeeder();
         return response.json();
