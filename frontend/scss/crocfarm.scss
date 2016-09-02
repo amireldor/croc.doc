@@ -31,14 +31,14 @@ body {
 $common-background: rgba(255, 255, 255, 0.55);
 $elem-space: 20px;  // Common spacing between elements
 
-#doc-form, #doc-name {
+#doc-form, #croc-line {
   width: $width;
   @include mobile {
     width: 90vw;
   }
 }
 
-#doc-name {
+#croc-line {
   margin: 60px 0 $elem-space;
   text-align: center;
   padding: $elem-space 0;  // Makes the box "buffier"

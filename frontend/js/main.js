@@ -3,7 +3,8 @@
 const crocfarm = require('./crocfarm');
 
 const docForm = document.getElementById('doc-form');
-const docText = document.getElementById('doc-text')
+const docText = document.getElementById('doc-text');
+const crocLine = document.getElementById('croc-line');
 
 docForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -16,23 +17,31 @@ docForm.addEventListener('submit', function (e) {
         'Content-Type': 'application/json'
     };
 
-    console.log(crocfarm);
-    crocfarm.feedCroc(doc).then(function (json) {
+    crocfarm.feedCroc(doc).then(function (response) {
+        return response.json();
+    }).then(function (json) {
         // Show NICE stuff in the GUI
-        console.log(success, json);
+        if (json.status == 'ok') {
+            updateCrocLine(json);
+        } else {
+            displayError(json);
+        }
     }).catch(function (error){
         // Show BAD stuff in the GUI
         console.error(error);
     });
 
-    //fetch('/feedcroc', {method: 'POST', headers, body: JSON.stringify(request)}).then(response => {
-    //    if (!response.ok) {
-    //        throw new Error('Response does not have an ok status');
-    //    }
-    //    return response.json();
-    //}).then(json => {
-    //    console.log('kson', json);
-    //}).catch(() => {
-    //    console.error('Some error with the request :(');
-    //});;
 });
+
+function updateCrocLine(json) {
+    console.log('update');
+    const name = crocLine.querySelector('.name');
+    const link = crocLine.querySelector('.link');
+    const docName = json.name || '';
+    name.innerHTML = docName;
+    link.href = link.href.replace(/\/.+$/, docName);
+}
+
+function displayError(json) {
+    console.log('erorr');
+}
