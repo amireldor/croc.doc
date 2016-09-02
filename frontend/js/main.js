@@ -34,12 +34,11 @@ docForm.addEventListener('submit', function (e) {
 });
 
 function updateCrocLine(json) {
-    console.log('update');
     const name = crocLine.querySelector('.name');
     const link = crocLine.querySelector('.link');
     const docName = json.name || '';
     name.innerHTML = docName;
-    link.href = link.href.replace(/\/.+$/, docName);
+    link.href = location.protocol + '//' + location.host + '/' + docName;
 }
 
 function displayError(json) {
