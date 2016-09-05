@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>croc.farm</title>
   <link rel="stylesheet" type="text/css" href="static/crocfarm.css"/>
+
+  <script>
+  {% if meta %} window.meta = {{ meta|tojson }}; {% endif %}
+  </script>
+
 </head>
 <body>
 
@@ -14,7 +19,7 @@
       </div>
       <form id="doc-form">
         <div id="doc-content">
-          <textarea name="doc" id="doc-text" placeholder="Enter stuff here..."></textarea>
+          <textarea name="doc" id="doc-text" placeholder="Enter stuff here...">{% if doc %}{{ doc }}{% endif %}</textarea>
         </div>
         <input id="feed-button" type="submit" value="feed the croc"/>
       </form>

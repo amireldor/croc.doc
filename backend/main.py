@@ -1,12 +1,14 @@
 import settings
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, make_response
 from docs import saveDoc, getDoc, NoDocFound
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
     return render_template('index.html')
+
 
 @app.route("/feedcroc", methods=["POST"])
 def save_doc():
@@ -38,15 +40,19 @@ def get_doc(which_doc):
     response = {}
     try:
         doc = getDoc(which_doc)
-        response = jsonify(status="ok",name=which_doc, doc=doc["doc"])
+        meta_data = {
+            "name": which_doc,
+            "all_is_nice": True,
+        }
+        content_data = doc['doc']
+        return render_template("index.html", doc=content_data, meta=meta_data)
 
     except NoDocFound:
-        response = jsonify(status="error", message="couldn't find that")
-        response.status_code = 404
-
-    finally:
-        return response
-
+        meta_data = {
+            "name": which_doc,
+            "all_is_nice": False,
+        }
+        return make_response(render_template('index.html', meta=meta_data), 404)
 
 
 if __name__ == "__main__":

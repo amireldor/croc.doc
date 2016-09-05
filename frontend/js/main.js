@@ -44,5 +44,5 @@ function updateCrocLine(json) {
 }
 
 function displayError(json) {
-    console.log('erorr');
+    console.log('error');
 }
