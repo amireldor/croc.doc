@@ -7,6 +7,11 @@ const docText = document.getElementById('doc-text');
 const crocLine = document.getElementById('croc-line');
 const feedButton = document.getElementById('feed-button');
 
+if (window.meta && window.meta.all_is_nice) {
+    updateCrocLine(window.meta.name || 'you-should-not-see-this');
+    showCrocLine();
+}
+
 docForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -17,7 +22,8 @@ docForm.addEventListener('submit', function (e) {
         return response.json();
     }).then(function (json) {
         if (json.status == 'ok') {
-            updateCrocLine(json);
+            updateCrocLine(json.name);
+            showCrocLine();
         } else {
             displayError(json);
         }
@@ -35,12 +41,22 @@ function enableFeeder() {
     feedButton.disabled = '';
 }
 
-function updateCrocLine(json) {
+function updateCrocLine(docName) {
     const name = crocLine.querySelector('.name');
     const link = crocLine.querySelector('.link');
-    const docName = json.name || '';
     name.innerHTML = docName;
     link.href = location.protocol + '//' + location.host + '/' + docName;
+}
+
+function showCrocLine() {
+    // Only add 'show' if it's not already there
+    const classes = crocLine.className.split(' ');
+    if (classes.indexOf('show') === -1) {
+        if (crocLine.className.length >= 1) {
+         crocLine.className += ' ';  // Pad in case of previous classes
+        }
+        crocLine.className += 'show';
+    }
 }
 
 function displayError(json) {

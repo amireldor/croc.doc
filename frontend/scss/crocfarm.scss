@@ -46,6 +46,11 @@ $elem-space: 20px;  // Common spacing between elements
   a {
     color: $color;
   }
+  transform: scaleX(0) scaleY(0);  // Be hidden initially
+  transition: transform 0.12s;
+  &.show {
+    transform: scaleX(1) scaleY(1);
+  }
 }
 
 #doc-form {
