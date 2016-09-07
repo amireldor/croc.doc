@@ -7,14 +7,20 @@ const docText = document.getElementById('doc-text');
 const crocLine = document.getElementById('croc-line');
 const feedButton = document.getElementById('feed-button');
 
-if (window.meta && window.meta.all_is_nice) {
-    updateCrocLine(window.meta.name || 'you-should-not-see-this');
-    showCrocLine();
+if (window.meta) {
+    if (window.meta.all_is_nice) {
+        updateCrocLine(window.meta.name || 'you-should-not-see-this');
+        showCrocLine();
+    } else {
+        const badName = window.meta.name || 'America';
+        showError('Can\'t find "' + badName + '" inside the croc.<br>Maybe it\'s already out of the other hole...');
+    }
 }
 
 docForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    hideError();
     disableFeeder();
     const doc = docText.value;
     crocfarm.feedCroc(doc).then(function (response) {
@@ -25,11 +31,11 @@ docForm.addEventListener('submit', function (e) {
             updateCrocLine(json.name);
             showCrocLine();
         } else {
-            displayError(json);
+            showError('Something\'s wrong with feeding the croc, maybe it\'s not hungry anymore...');
         }
     }).catch(function (error){
         enableFeeder();
-        console.error(error);
+        showError('Seems like the croc is not in the zoo anymore. Nothing to see, sorry.');
     });
 });
 
@@ -59,6 +65,13 @@ function showCrocLine() {
     }
 }
 
-function displayError(json) {
-    console.log('error');
+function showError(message) {
+    const crocError = document.getElementById('error');
+    crocError.innerHTML = message;
+    crocError.className = 'show';
+}
+
+function hideError() {
+    const crocError = document.getElementById('error');
+    crocError.className = '';
 }
