@@ -1,12 +1,9 @@
 'use strict';
 
 const crocfarm = require('./crocfarm');
-
 const docForm = document.getElementById('doc-form');
-const docText = document.getElementById('doc-text');
-const crocLine = document.getElementById('croc-line');
-const feedButton = document.getElementById('feed-button');
 
+// Runs at application start
 if (window.meta) {
     if (window.meta.all_is_nice) {
         updateCrocLine(window.meta.name || 'you-should-not-see-this');
@@ -19,9 +16,9 @@ if (window.meta) {
 
 docForm.addEventListener('submit', function (e) {
     e.preventDefault();
-
     hideError();
     disableFeeder();
+    const docText = document.getElementById('doc-text');
     const doc = docText.value;
     crocfarm.feedCroc(doc).then(function (response) {
         enableFeeder();
@@ -40,14 +37,17 @@ docForm.addEventListener('submit', function (e) {
 });
 
 function disableFeeder() {
+    const feedButton = document.getElementById('feed-button');
     feedButton.disabled = 'disabled';
 }
 
 function enableFeeder() {
+    const feedButton = document.getElementById('feed-button');
     feedButton.disabled = '';
 }
 
 function updateCrocLine(docName) {
+    const crocLine = document.getElementById('croc-line');
     const name = crocLine.querySelector('.name');
     const link = crocLine.querySelector('.link');
     name.innerHTML = docName;
@@ -55,6 +55,7 @@ function updateCrocLine(docName) {
 }
 
 function showCrocLine() {
+    const crocLine = document.getElementById('croc-line');
     // Only add 'show' if it's not already there
     const classes = crocLine.className.split(' ');
     if (classes.indexOf('show') === -1) {
