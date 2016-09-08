@@ -18,11 +18,11 @@
         <p>There should be an error message here if something's wrong.</p>
       </div>
       <div id="croc-line">
-        <a class="link" href="http://croc.farm/mocking-spider">http://croc.farm/<strong class="name">mocking-spider</strong></a>
+        <a class="link" href="">{{ base_url }}<strong class="name">{{ meta.name }}</strong></a>
       </div>
       <form id="doc-form">
         <div id="doc-content">
-          <textarea name="doc" id="doc-text" placeholder="Enter stuff here...">{% if doc %}{{ doc }}{% endif %}</textarea>
+          <textarea name="doc" id="doc-text" placeholder="Enter stuff here...">{{ doc }}</textarea>
         </div>
         <input id="feed-button" type="submit" value="feed the croc"/>
       </form>

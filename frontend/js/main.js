@@ -6,7 +6,6 @@ const docForm = document.getElementById('doc-form');
 // Runs at application start
 if (window.meta) {
     if (window.meta.all_is_nice) {
-        updateCrocLine(window.meta.name || 'you-should-not-see-this');
         showCrocLine();
     } else {
         const badName = window.meta.name || 'America';

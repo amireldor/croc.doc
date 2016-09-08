@@ -13,3 +13,5 @@ MAX_DOC_SIZE = 4096
 PROTECTION_TIME = 60 * 60 * 24  # One day
 SAVE_RETRIES = 100  # if we hit a protected doc, attempt a differnet name
 
+BASE_URL = 'http://croc.farm/'
+

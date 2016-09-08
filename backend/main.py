@@ -5,6 +5,14 @@ from docs import saveDoc, getDoc, NoDocFound
 app = Flask(__name__)
 
 
+@app.context_processor
+def add_to_context():
+    return {
+        'base_url': settings.BASE_URL,
+        'meta': {},
+    }
+
+
 @app.route("/")
 def home():
     return render_template('index.html')
