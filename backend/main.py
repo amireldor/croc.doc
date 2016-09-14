@@ -45,7 +45,6 @@ def save_doc():
 
 @app.route("/<which_doc>", methods=["GET"])
 def get_doc(which_doc):
-    response = {}
     try:
         doc = getDoc(which_doc)
         meta_data = {

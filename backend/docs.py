@@ -7,11 +7,11 @@ This module is responsible for:
 from random import randint, choice
 import datetime
 from connection import docs as docs_collection
-import pymongo
 import settings
 
 adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
 animals = [w.strip().lower() for w in open('Animals.txt').readlines()]
+
 
 def randomDocName():
     final = "{}-{}".format( choice(adjectives), choice(animals) )
@@ -21,11 +21,14 @@ def randomDocName():
 class NoDocFound(Exception):
     pass
 
+
 class DatabaseError(Exception):
     pass
 
+
 class FailedToSave(Exception):
     pass
+
 
 def getDoc(name):
     try:
