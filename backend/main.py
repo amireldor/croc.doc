@@ -1,6 +1,6 @@
 import settings
 from flask import Flask, request, jsonify, render_template, make_response
-from docs import saveDoc, getDoc, NoDocFound
+from docs import save_doc, get_doc, NoDocFound
 
 app = Flask(__name__)
 
@@ -35,7 +35,7 @@ def save_doc():
         }
         return jsonify(response)
 
-    new_name = saveDoc(doc)
+    new_name = save_doc(doc)
     response = {
         "status": "ok",
         "name": new_name,
@@ -46,7 +46,7 @@ def save_doc():
 @app.route("/<which_doc>", methods=["GET"])
 def get_doc(which_doc):
     try:
-        doc = getDoc(which_doc)
+        doc = get_doc(which_doc)
         meta_data = {
             "name": which_doc,
             "all_is_nice": True,

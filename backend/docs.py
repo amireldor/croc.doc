@@ -4,7 +4,7 @@ This module is responsible for:
     - rabbits
 """
 
-from random import randint, choice
+from random import choice
 import datetime
 from connection import docs as docs_collection
 import settings
@@ -13,7 +13,7 @@ adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
 animals = [w.strip().lower() for w in open('Animals.txt').readlines()]
 
 
-def randomDocName():
+def random_doc_name():
     final = "{}-{}".format( choice(adjectives), choice(animals) )
     return final
 
@@ -30,7 +30,7 @@ class FailedToSave(Exception):
     pass
 
 
-def getDoc(name):
+def get_doc(name):
     try:
         doc = docs_collection.find_one({ "name": name });
         if doc is None:
@@ -39,11 +39,10 @@ def getDoc(name):
     except pymongo.errors.ConnectionFailure:
         raise DatabaseError("Couldn't connect to database")
 
-
     return doc
 
 
-def saveDoc(doc):
+def save_doc(doc):
     """Saves the doc.  If name exists in database and is not protected,
     overwrite the existing doc.  If the name exists and is protected (was used
     recently), then try a differnet name.
@@ -52,7 +51,7 @@ def saveDoc(doc):
     """
     for _ in range(settings.SAVE_RETRIES):
         try:
-            name = randomDocName()
+            name = random_doc_name()
             doc_in_db = docs_collection.find_one({ "name": name }, { "protected_until": 1 });
 
             if doc_in_db is None:
