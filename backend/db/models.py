@@ -1,17 +1,18 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, DateTime, Integer, String, Text, Enum
+from sqlalchemy import Column, DateTime, Integer, String, Text
+
 
 Base = declarative_base()
 
 
-class Animal(Base):
+class Docs(Base):
     """
-    Croc feeds upon animals.  This is the actual data of the objects submitted by users.
+    A piece of user submitted data that was given a shortened URL.
     """
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
-    created = Column(DateTime, timezone=True)
-    updated = Column(DateTime, timezone=True)
-    expires = Column(DateTime, timezone=True)
-    type = Column(Enum(enums=['text', 'link', 'code', 'file']))  # We start with text only
+    created = Column(DateTime(timezone=True))
+    updated = Column(DateTime(timezone=True))
+    expires = Column(DateTime(timezone=True))
+    type = Column(String(30))  # "text" or other that will be used in the future (code/link/file/...)
     body = Column(Text)
