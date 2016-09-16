@@ -10,6 +10,7 @@ from connection import session
 from db.models import Doc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import settings
+import datetime
 
 adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
 animals = [w.strip().lower() for w in open('Animals.txt').readlines()]
@@ -29,6 +30,9 @@ class DatabaseError(Exception):
 
 
 class FailedToSave(Exception):
+    pass
+
+class DocNotExpired(Exception):
     pass
 
 
@@ -52,47 +56,38 @@ def get_doc(name):
     return None
 
 
-def save_doc(doc):
-    """Saves the doc.  If name exists in database and is not protected,
-    overwrite the existing doc.  If the name exists and is protected (was used
-    recently), then try a differnet name.
+class DocSaver:
+    def __init__(self):
+        self.doc = None
+        self.name = ''
 
-    Return the newly created doc name, or None on failure.
-    """
-    for _ in range(settings.SAVE_RETRIES):
-        try:
-            name = random_doc_name()
-            doc_in_db = docs_collection.find_one({ "name": name }, { "protected_until": 1 });
-
-            if doc_in_db is None:
-                exists = False
-            else:
-                exists = True
-
+    def save_doc(self, body, name=random_doc_name()):
+        self.name = name
+        for _ in range(settings.SAVE_RETRIES):
+            self.doc = session.query(Doc).filter(Doc.name == self.name).one_or_none()
             try:
-                if exists and doc_in_db["protected_until"] >= datetime.datetime.utcnow():
-                    # Still under protection
-                    continue # Search another name
-
-            except KeyError:
-                # No protected_until key
-                pass
-
-            # OK, save or update it
-            data = {
-                "name": name,
-                "doc": doc,
-                "inserted": datetime.datetime.utcnow(),
-                "protected_until": datetime.datetime.utcnow() + datetime.timedelta(seconds=settings.PROTECTION_TIME),
-            }
-
-            docs_collection.update_one({"name": name}, {"$set": data}, upsert=True)
-
-            # Save successful!
+                self.save_or_update_doc(body)
+            except DocNotExpired:
+                continue
+            session.add(self.doc)
+            session.commit()
             return name
 
-        except pymongo.errors.DuplicateKeyError:
-            pass
+        # If we reach here, the SAVE_RETRIES loop finished and something is bad
+        raise FailedToSave('Reached maximum save retry count, seems like many docs exist today!')
 
-    # Failed to save
-    raise FailedToSave('Reached maximum save retry count, seems like many docs are protected today!')
+    def save_or_update_doc(self, body):
+        now = datetime.datetime.utcnow()
+        if self.doc is not None:
+            expired = datetime.datetime.utcnow() > self.doc.expires
+            if not expired:
+                raise DocNotExpired
+            self.doc.updated = now
+        else:
+            self.doc = Doc(name=self.name,
+                      created=now,
+                      updated=now,
+                      type="text",  # only "text" supported for now
+                      body=body,
+                      )
+        self.doc.calculate_expiry_time()
