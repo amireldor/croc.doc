@@ -1,12 +1,13 @@
 """
-Connection to the database. MongoDB?
+Connection to the database.
 """
 import os
-from pymongo import MongoClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-# 'mongo' host should be docker stuff from docker-compose
-connection_url = os.environ.get('MONGO_URL', 'mongodb://mongo')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql+psycopg2://postgres:@localhost:5432/crocfarm')
 
-client = MongoClient(connection_url)
-database = client.docs
-docs = database.docs
+engine = create_engine(DATABASE_URL)
+Session = sessionmaker(bind=engine)
+
+session = Session()

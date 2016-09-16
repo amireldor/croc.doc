@@ -6,7 +6,9 @@ This module is responsible for:
 
 from random import choice
 import datetime
-from connection import docs as docs_collection
+from connection import session
+from db.models import Docs
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import settings
 
 adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
@@ -32,14 +34,22 @@ class FailedToSave(Exception):
 
 def get_doc(name):
     try:
-        doc = docs_collection.find_one({ "name": name });
-        if doc is None:
-            raise NoDocFound("Can't find a doc named %s" % name)
+        # doc = docs_collection.find_one({ "name": name });
+        doc = session.query(Docs).filter(Docs.name == name).one()
+        json_doc = {
+            'name': doc['name'],
+            'doc': doc['body'],
+            'type': doc['type'],
+        }
+        return json_doc
 
-    except pymongo.errors.ConnectionFailure:
-        raise DatabaseError("Couldn't connect to database")
+    except NoResultFound:
+        raise NoDocFound("Can't find a doc named {}".format(name))
 
-    return doc
+    except MultipleResultsFound:
+        raise DatabaseError("Multiple entries to doc {}, something is terribly wrong".format(name))
+
+    return None
 
 
 def save_doc(doc):
