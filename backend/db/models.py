@@ -22,3 +22,6 @@ class Doc(Base):
 
     def calculate_expiry_time(self):
         self.expires = self.updated + datetime.timedelta(seconds=settings.SECONDS_TO_EXPIRE)
+
+    def __repr__(self):
+        return "<Doc '{}' {} {}>".format(self.name, self.type, self.body[:40])

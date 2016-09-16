@@ -5,12 +5,12 @@ This module is responsible for:
 """
 
 from random import choice
-import datetime
 from connection import session
 from db.models import Doc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import settings
 import datetime
+import pytz
 
 adjectives = [w.strip().lower() for w in open('Adjectives.txt').readlines()]
 animals = [w.strip().lower() for w in open('Animals.txt').readlines()]
@@ -31,6 +31,7 @@ class DatabaseError(Exception):
 
 class FailedToSave(Exception):
     pass
+
 
 class DocNotExpired(Exception):
     pass
@@ -61,9 +62,9 @@ class DocSaver:
         self.doc = None
         self.name = ''
 
-    def save_doc(self, body, name=random_doc_name()):
-        self.name = name
+    def save_doc(self, body):
         for _ in range(settings.SAVE_RETRIES):
+            self.name = random_doc_name()
             self.doc = session.query(Doc).filter(Doc.name == self.name).one_or_none()
             try:
                 self.save_or_update_doc(body)
@@ -71,23 +72,23 @@ class DocSaver:
                 continue
             session.add(self.doc)
             session.commit()
-            return name
+            return self.name
 
         # If we reach here, the SAVE_RETRIES loop finished and something is bad
         raise FailedToSave('Reached maximum save retry count, seems like many docs exist today!')
 
     def save_or_update_doc(self, body):
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
         if self.doc is not None:
-            expired = datetime.datetime.utcnow() > self.doc.expires
+            expired = now > self.doc.expires
             if not expired:
                 raise DocNotExpired
             self.doc.updated = now
         else:
             self.doc = Doc(name=self.name,
-                      created=now,
-                      updated=now,
-                      type="text",  # only "text" supported for now
-                      body=body,
-                      )
+                           created=now,
+                           updated=now,
+                           type="text",  # only "text" supported for now
+                           body=body,
+                           )
         self.doc.calculate_expiry_time()
