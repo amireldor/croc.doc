@@ -9,6 +9,7 @@ class Docs(Base):
     """
     A piece of user submitted data that was given a shortened URL.
     """
+    __tablename__ = "docs"
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
     created = Column(DateTime(timezone=True))
