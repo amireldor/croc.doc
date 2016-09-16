@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime, Integer, String, Text
 Base = declarative_base()
 
 
-class Docs(Base):
+class Doc(Base):
     """
     A piece of user submitted data that was given a shortened URL.
     """

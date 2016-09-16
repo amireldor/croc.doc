@@ -7,7 +7,7 @@ This module is responsible for:
 from random import choice
 import datetime
 from connection import session
-from db.models import Docs
+from db.models import Doc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 import settings
 
@@ -35,7 +35,7 @@ class FailedToSave(Exception):
 def get_doc(name):
     try:
         # doc = docs_collection.find_one({ "name": name });
-        doc = session.query(Docs).filter(Docs.name == name).one()
+        doc = session.query(Doc).filter(Doc.name == name).one()
         json_doc = {
             'name': doc.name,
             'doc': doc.body,
