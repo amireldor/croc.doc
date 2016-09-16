@@ -37,9 +37,9 @@ def get_doc(name):
         # doc = docs_collection.find_one({ "name": name });
         doc = session.query(Docs).filter(Docs.name == name).one()
         json_doc = {
-            'name': doc['name'],
-            'doc': doc['body'],
-            'type': doc['type'],
+            'name': doc.name,
+            'doc': doc.body,
+            'type': doc.type,
         }
         return json_doc
 
