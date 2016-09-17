@@ -1,9 +1,14 @@
 import unittest
+from unittest import mock
 import docs
 import connection
 from db.models import Base
 import datetime
-import mock
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig()
+logging.getLogger(__name__).setLevel(logging.DEBUG)
 
 
 class DocsTestCase(unittest.TestCase):
@@ -64,14 +69,14 @@ class DocsTestCase(unittest.TestCase):
 
         docs.delete_doc(test_doc_name)
 
-    @mock.patch('docs.random_doc_name', self.fixed_random_name)
-    def test_random_doc_name_existed(self):
-        print('arandom', docs.random_doc_name())
-        self.assertFalse(True)
+    @mock.patch('settings.SAVE_RETRIES', 5)
+    @mock.patch('docs.random_doc_name')
+    def test_random_doc_name_existed(self, random_doc_name):
+        random_doc_name.return_value = 'here is jimmy'
 
-    @staticmethod
-    def fixed_random_name():
-        return 'not-so-random-name'
+        docs.save_doc('initial document inserted')
+        with self.assertRaises(docs.FailedToSave):
+            docs.save_doc('inserting ot the same name? failure')
 
 
 if __name__ == '__main__':
