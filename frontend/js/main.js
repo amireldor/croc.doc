@@ -1,5 +1,6 @@
 'use strict';
 
+const htmlentities = require('he');
 const crocfarm = require('./crocfarm');
 const docForm = document.getElementById('doc-form');
 
@@ -67,7 +68,7 @@ function showCrocLine() {
 
 function showError(message) {
     const crocError = document.getElementById('error');
-    crocError.innerHTML = message;
+    crocError.innerHTML = htmlentities.encode(message);
     crocError.className = 'show';
 }
 
