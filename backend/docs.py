@@ -124,7 +124,8 @@ def save_doc(body, name=None, expires=DocSaver.AUTO_CALCULATE_EXPIRY):
         try_other_names = False
 
     saver = DocSaver()
-    saver.save_doc(body, name=name, try_other_names=try_other_names, expires=expires)
+    new_name = saver.save_doc(body, name=name, try_other_names=try_other_names, expires=expires)
+    return new_name
 
 
 def delete_doc(name):
