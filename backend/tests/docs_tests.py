@@ -3,6 +3,7 @@ import docs
 import connection
 from db.models import Base
 import datetime
+import mock
 
 
 class DocsTestCase(unittest.TestCase):
@@ -63,8 +64,14 @@ class DocsTestCase(unittest.TestCase):
 
         docs.delete_doc(test_doc_name)
 
+    @mock.patch('docs.random_doc_name', self.fixed_random_name)
     def test_random_doc_name_existed(self):
+        print('arandom', docs.random_doc_name())
         self.assertFalse(True)
+
+    @staticmethod
+    def fixed_random_name():
+        return 'not-so-random-name'
 
 
 if __name__ == '__main__':
