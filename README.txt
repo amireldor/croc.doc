@@ -1,20 +1,4 @@
-This is what runs croc.farm. It is called croc.doc after the docs it manages.
-
-# frontend:
-
-You build stuff with `npm` and `gulp`.  
-`npm i` and `gulp dev` (will add more commands later, this is a watch thing).
-This will create `backend/static` with the appropriate entries and also copy the
-ninja template from `frontend/index.html` to `backend/templates/index.html`.
-
-Tests are run with karma and use mocha.which you should get with `npm i`. If
-you got `karma-cli` installed globally you can `karma start` and be happy.
-It's fun to have multiple tabs on a terminal. Actually not, but a lot of
-windows is also not so fun. Multiple monitors is fun.
-
-# backend:
-
-stuff. stfu.
+croc.doc is the backend service that saves the docs fed to the croc in croc.farm.
 
 ## Run it
 
@@ -50,7 +34,3 @@ POST: Should be Content-Type: application/json
     "message": <some greeting, optional>
 }
 
-
-# frontend
-
-npm install and gulp and such, currently there's `gulp js`

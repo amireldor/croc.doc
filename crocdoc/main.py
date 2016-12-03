@@ -1,5 +1,5 @@
 import settings
-from flask import Flask, request, jsonify, render_template, make_response
+from flask import Flask, request, jsonify, make_response
 import docs
 
 app = Flask(__name__)
@@ -15,7 +15,7 @@ def add_to_context():
 
 @app.route("/")
 def home():
-    return render_template('index.html')
+    return jsonify(hi="hello!")
 
 
 @app.route("/feedcroc", methods=["POST"])
@@ -47,19 +47,15 @@ def save_doc():
 def get_doc(which_doc):
     try:
         doc = docs.get_doc(which_doc)
-        meta_data = {
-            "name": which_doc,
-            "all_is_nice": True,
-        }
         doc_body = doc['body']
-        return render_template("index.html", doc_body=doc_body, meta=meta_data)
+        return jsonify(content_data)
 
     except docs.NoDocFound:
-        meta_data = {
-            "name": which_doc,
-            "all_is_nice": False,
+        error = {
+            "error": True,
+            "error_message": "doc not found: {}".format(which_doc),
         }
-        return make_response(render_template('index.html', meta=meta_data), 404)
+        return make_response(jsonify(error), 404)
 
 
 if __name__ == "__main__":
