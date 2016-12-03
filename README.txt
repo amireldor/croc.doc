@@ -14,8 +14,10 @@ environment variable. Or:
     DEBUG=1 python main.py
 
 
-Will automatically connect to host 'mongo' for mongo stuff (use with Docker).
-Change this with env var MONGO_URL=mongodb://yourhost.
+### Database (Postgres)
+
+Use environment variable DATABASE_URL, like: 'postgresql+psycopg2://postgres:@localhost:5432/crocfarm' (the default when not provided).
+
 
 ## Web interface
 
